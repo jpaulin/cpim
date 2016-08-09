@@ -13,14 +13,13 @@ Childish easy PIM
    - location of the DSF can be set within the main cpim.sh script
    - editing of items happens manually, to the Data Storage File
 
-0.2 Tagged tasks: blocks of text
+0.2 Tagged tasks: support multiline items in Data Storage File
    - change to the DSF storage format
      - fundamentally shifting from a line-by-line to a
        structural format
      - immediate benefits:
-       - moving of multiline tasks
-       - encapsulation of "non-intelligent" content from
-         data headers
+       - moving of multiline tasks as entities (they won't split)
+       - separation of user-specified text content from data headers
 
 0.3 WIP: Not yet thoroughly planned
   - interactive mode introduced to The Software
