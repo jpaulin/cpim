@@ -4,7 +4,6 @@ Childish easy PIM
 0.1 MVP - minimum viable product
 - Rudimentary single script-based product
    - has 2 files: the script (executable) and a data storage file
-   
  - User can run a shell script
    - script checks for existence of data storage file
    - if file exists, 'cat' file and "sort -n"
@@ -34,7 +33,6 @@ Childish easy PIM
       c - show calendar 
 
 0.4 WIP   
- 1 sprint
   + adding calendar functionality: browse by week
   - from NOW, enable showing what is the date
     1 calendar week ago
