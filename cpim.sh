@@ -1,22 +1,38 @@
 #!/bin/bash
 
-# Of notation in cpim.sh
+# Of notation in cpim.sh code
 #  - smallcaps vars are local
 #  - some parts of the code from gists in Github, credit due here in source
 
 # Fix:
-#  either use the cmd line parser at main level, or pass the original $* array
-#  to the function checkSwitches()
+#  - handle possible ambiguity, when makeHome() encounters a folder, but
+#    no data file
 
-# A variable defining the DSF (storage file)
+# Variables
+# ---------
+# These are initially set, but may be overridden by parts of the program
+#   Example: 'datafile' if overridden, if -d switch supplied to program  
+#
+# A variable defining the DSF (storage file) path
 datafile="/home/dre/.cpim/cpim.txt"
+
+# 0 = probeDSF did not find a readable DSF file
+# 1 = probeDSF found a file
+dataFilePresent=0
+
+# Advertisement for the project home page on Github
 homewww="https://github.com/jpaulin/cpim/"
+
+# Expect to have all 'cpim' configuration under here
+homedir="$HOME/.cpim"
+
+# ----------------------------------------------------------------------
 
 # Prints just the 3 essential signature lines of the software
 function printSignature() {
     echo "cpim - a command-line PIM"
-    echo " v0.1 (2016)"
-    echo " Latest news: $wwwhome"
+    echo " v0.11 (2016)"
+    echo " Latest news: $homewww"
 }
 
 # Main task list manipulation functions
@@ -60,7 +76,9 @@ function printCurrentConfigs {
     printSignature
     echo
     echo "Configuration dump:"
-    echo " datafile=$datafile"
+    echo "        datafile = $datafile"
+    echo " dataFilePresent = $dataFilePresent"
+    echo "         homedir = $homedir" 
     exit 0
 }
 
@@ -70,7 +88,29 @@ function probeDSF() {
     if [ ! -f $datafile ]; then
         echo "Error!"
 	echo "Was looking for a data file at $datafile"
+        echo "Initialize a data file with "
+	echo "  cpim --init"
 	exit 1
+    fi
+    # Set flag to show DSF exists
+    dataFilePresent=1
+}
+
+
+# Settle: make home - the folder for data file.
+# Result: upon success, a ~/.cpim folder exists 
+#         or user informed of trouble
+function makeHome() {
+    if [ ! -d $homedir ]; then
+        mkdir -p $homedir
+        # Now we assume a home directory exists. If not, it is fatal.
+	if [ ! -d $homedir ]; then
+	    echo "Cannot make home directory for cpim"
+	    echo "Attempted to mkdir:"
+	    echo $homedir
+	    exit 1
+	fi
+        echo "Created home directory $homedir"
     fi
 }
 
@@ -90,6 +130,8 @@ function showDSF() {
 # Note: Always first check switches, then call 'probeDSF' 
 
 # checkSwitches
+# Goes through the command line parms, destructively (ie. one pass)
+# depends on 'awk' being present as external tool
 while [ "$1" != "" ]; do
    PARAM=`echo $1 | awk -F= '{print $1}'`
    VALUE=`echo $1 | awk -F= '{print $2}'`
@@ -98,13 +140,18 @@ while [ "$1" != "" ]; do
 		    printHelp
 		    exit
 		    ;;
-        -c)
+             -c)
+                    probeDSF
 		    printCurrentConfigs
+		    exit
+		    ;;
+	     -i | --init)
+		    makeHome
 		    exit
 		    ;;
 	    -d | --datafile)
 		    datafile=$VALUE
-            exit
+                    exit
 		    ;;
 	    *)
 		    echo "ERROR: unknown parameter \"$PARAM\""
@@ -117,7 +164,12 @@ done
 
 # Check existence of data file    
 probeDSF
-showDSF
+if [ "$dataFilePresent" -eq 1 ]; then
+    showDSF
+fi
+if [ "$dataFilePresent" -eq 0 ]; then
+    echo "No data file"
+fi
 # Show a calendar view, with week numbers at bottom 
 ncal -w
 exit 0
