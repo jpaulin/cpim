@@ -17,9 +17,21 @@ Childish easy PIM
    - change to the DSF storage format
      - fundamentally shifting from a line-by-line to a
        structural format
+     - adopting a 3 -field system
+       - flags, hash, payload text
+     - having both Groups and IDs encoded in the <hash>
+       - max. no# of groups is 4095 (12 bits)
+       - max. no# of IDs (=tasks) is 262143 (18 bits)
+       = the 'hash' would be 5 characters long
      - immediate benefits:
        - moving of multiline tasks as entities (they won't split)
        - separation of user-specified text content from data headers
+
+0.2.1
+   - calculator (how many days to due date)
+     - shows somewhere on the line, when a task list is printed
+   - sort the task list by "days left, ascending"
+   - decide upon robust order of items that do not have due date
 
 0.3 WIP: Not yet thoroughly planned
   - interactive mode introduced to The Software

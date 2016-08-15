@@ -5,7 +5,7 @@ The SPECS file
 
 Note:
  - the Development Roadmap section is kept in README.md
-
+ 
 This file contains the details, and complements README.md in being
 the 'Missing manual for developers'. As the README.md keeps things
 short and FAQ -like for general audience, SPECS.md explicitly tells
@@ -17,8 +17,21 @@ each version of the software.
     to Github, the cpim.sh was 105 lines of bash script
 
 0.2 Tagged tasks: support multiline items in Data Storage File
-   - change to the DSF storage format
+   - a change to the simple DSF storage format
    - we need to thoroughly think the format
+   - proposal:
+      1. Keep all lines nevertheless conformant to BASE64
+         (readable ASCII)
+	 Specs generally at
+	 [Base64 Wikipedia](https://en.wikipedia.org/wiki/Base64)
+      2. Group lines of tasks using a suitably long hash
+         6 bits per character
+	 If 64K tasks are desired as maximum number, and we want
+	 to support up to 64-line tasks, then 4 characters would
+	 suffice as hash length.
+	 Group id : 3*6 = 18 bits
+	 Line  id : 6 bits (2^6 = 64)
+	 	 
    - a 'cat | sort -n' piping will not do the trick
      - instead have code to handle the items
      - bring internally the supporting functions to add, remove, edit
@@ -28,7 +41,24 @@ each version of the software.
      - generally the design should consider 'sorting' as a algorithm
        that can work based on a priority key
        - execution group, raw manual priority level, etc.
-     
+   
+0.2 General format for lines: three fields
+
+[flags] | 4charHash | <Payload>
+- flags account for
+  - due Date field
+  - priority number
+- using '|' as field separator
+- with max line length = 78, <Payload> gets approximately max. 66 chars
+- example:
+
+- extension can be thought out via linking
+  - where the [flags] field, instead of containing raw data, would contain
+    a link ID to the data
+    - data would reside either in the same DSF file, or in another file
+
+---
+
 0.3 WIP: Not yet thoroughly planned
   - interactive mode introduced to The Software
     => now user can issue keyboard commands and work more efficiently

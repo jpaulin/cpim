@@ -9,7 +9,7 @@
 #  to the function checkSwitches()
 
 # A variable defining the DSF (storage file)
-datafile="./cpim_sample.txt"
+datafile="/home/dre/.cpim/cpim.txt"
 homewww="https://github.com/jpaulin/cpim/"
 
 # Prints just the 3 essential signature lines of the software
@@ -18,6 +18,24 @@ function printSignature() {
     echo " v0.1 (2016)"
     echo " Latest news: $wwwhome"
 }
+
+# Main task list manipulation functions
+#
+#   insert <N> <desc>
+#   delete <id>
+#   deleteAll <group>
+#   mark <id> <newAttribs>
+#   markAll <group> <newAttribs>
+#   addToAll <N> <group>
+#   subFromAll <N> <group>
+# 
+
+# Renumber priorities: insert new task with prio N
+#   Assumes a previous list of tasks with any distribution
+#   of priority numbers.
+# ->
+#   If number N does not occur in list, inserts 
+
 
 # This is the Help screen, for -h switch
 function printHelp() {
@@ -37,7 +55,7 @@ function printHelp() {
 }    
 
 # This function is called as last function, ie. program terminates after
-# call
+# a call to this. Exit value is 0 (clean).
 function printCurrentConfigs {
     printSignature
     echo
