@@ -13,6 +13,11 @@ Childish easy PIM
    - location of the DSF can be set within the main cpim.sh script
    - editing of items happens manually, to the Data Storage File
 
+0.11 bug fix
+- the -c (configuration dump) did not show project home page
+  Fixed. Now it shows a line: 'Latest news:' and the Github page
+  URL.
+
 0.2 Tagged tasks: support multiline items in Data Storage File
    - change to the DSF storage format
      - fundamentally shifting from a line-by-line to a
