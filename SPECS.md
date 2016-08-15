@@ -17,8 +17,11 @@ each version of the software.
     to Github, the cpim.sh was 105 lines of bash script
 
 0.2 Tagged tasks: support multiline items in Data Storage File
-   - a change to the simple DSF storage format
-   - we need to thoroughly think the format
+   - up until here, the data file that cpim used to stored items
+     was super simple: just ASCII lines
+   - now 'Tagged' tasks means two things:
+     - each task can physically span many lines in the file
+     - tasks get more metadata: a Group, ID, and line number
    - proposal:
       1. Keep all lines nevertheless conformant to BASE64
          (readable ASCII)
@@ -31,9 +34,10 @@ each version of the software.
 	 suffice as hash length.
 	 Group id : 3*6 = 18 bits
 	 Line  id : 6 bits (2^6 = 64)
-	 	 
-   - a 'cat | sort -n' piping will not do the trick
-     - instead have code to handle the items
+
+   - once Tagged format is introduced, a simple Unix-style
+     'cat | sort -n' piping will no longer work
+     - instead we need to have code to handle the items
      - bring internally the supporting functions to add, remove, edit
        contents of an item
        - this is kind of forward-looking investment since we'll
